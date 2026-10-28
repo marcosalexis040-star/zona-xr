@@ -12,6 +12,14 @@
 
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  /* Modo ligero: teléfonos, pantallas táctiles, poca memoria/CPU o ahorro de datos.
+     Menos estrellas, sin curvatura 3D por tarjeta y 30 fps en la galaxia. */
+  var lite = !fine || window.innerWidth < 760 ||
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    !!(navigator.connection && navigator.connection.saveData);
+  if (lite) root.classList.add('vr-lite');
+
   var acc = (getComputedStyle(root).getPropertyValue('--accent-rgb') || '139, 92, 246')
     .split(',').map(function (n) { return +n || 0; });
   var accStr = acc.join(',');
@@ -46,7 +54,7 @@
 
     // Nebulosa y Vía Láctea: se pintan una vez a media resolución
     function nebula() {
-      var w = Math.ceil(W * 0.6), h = Math.ceil(H * 0.6);
+      var q = lite ? 0.4 : 0.6, w = Math.ceil(W * q), h = Math.ceil(H * q);
       var c = document.createElement('canvas');
       c.width = w; c.height = h;
       var g = c.getContext('2d');
@@ -147,13 +155,14 @@
     }
 
     function build() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      var dpr = lite ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
       W = window.innerWidth; H = window.innerHeight;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       neb = nebula();
       gal = gal || spiral();
-      var n = Math.round(Math.min(1300, Math.max(320, W * H / 1250)));
+      var n = lite ? Math.round(Math.min(260, Math.max(120, W * H / 3200)))
+                   : Math.round(Math.min(1300, Math.max(320, W * H / 1250)));
       stars = [];
       for (var i = 0; i < n; i++) stars.push(star(0.04 + Math.random() * 0.96));
     }
@@ -250,10 +259,13 @@
     }
 
     build();
-    var rt = null;
+    var rt = null, lastW = W;
     window.addEventListener('resize', function () {
+      // En móvil la barra de direcciones cambia la altura al hacer scroll: no reconstruir
+      if (lite && window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
       clearTimeout(rt);
-      rt = setTimeout(function () { build(); if (calm) draw(0, 0); }, 160);
+      rt = setTimeout(function () { build(); if (calm) draw(0, 0); }, 250);
     });
     return { draw: draw };
   }
@@ -333,6 +345,7 @@
 
   function measure() {
     curved = [];
+    if (lite) { layoutDirty = false; return; }
     document.querySelectorAll(SEL3D).forEach(function (el) {
       if (el.offsetParent === null || el.closest('.hero')) return;
       var x = 0, y = 0, n = el;
@@ -343,6 +356,7 @@
   }
 
   function curve() {
+    if (lite) return;
     var vw = window.innerWidth, vh = window.innerHeight, y = scroll.y;
     var off = root.classList.contains('vr-off');
     var ky = vw < 760 ? 5 : 8, kx = vw < 760 ? 0 : 7;
@@ -441,7 +455,7 @@
 
   function heroVideo() {
     var host = document.querySelector('.hero-video');
-    if (!host || calm) return;
+    if (!host || calm || lite) return;
     if (navigator.connection && navigator.connection.saveData) return;
     var hero = host.closest('.hero');
     var id = host.dataset.yt, start = +host.dataset.start || 0;
@@ -548,7 +562,7 @@
       if (!/^[\w.-]+\.html(#.*)?$/.test(href)) return;
       e.preventDefault();
       root.classList.add('vr-leave');
-      setTimeout(function () { window.location.href = href; }, 400);
+      setTimeout(function () { window.location.href = href; }, 220);
     });
     window.addEventListener('pageshow', function () { root.classList.remove('vr-leave'); });
   }
@@ -580,7 +594,16 @@
       b.addEventListener('click', function () { layoutDirty = true; });
     });
 
+    var running = true;
+    document.addEventListener('visibilitychange', function () {
+      running = !document.hidden;
+      if (running) { last = performance.now(); requestAnimationFrame(frame); }
+    });
+
     function frame(now) {
+      if (!running) return;
+      // 30 fps en modo ligero: la galaxia no necesita más y ahorra batería
+      if (lite && now - last < 30) { requestAnimationFrame(frame); return; }
       var dt = Math.min((now - last) / 1000, 0.05);
       last = now; t += dt; n++;
       hud.fps += ((dt > 0 ? 1 / dt : 60) - hud.fps) * 0.05;
