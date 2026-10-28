@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" data-escuela="universal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zona XR · Catálogo por área — Infografía</title>
+<meta name="description" content="Infografía imprimible del catálogo de la Zona XR de la Biblioteca del Tec: 6 áreas, 76 experiencias de realidad extendida.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/zonaxr.css">
+<style>
+/* ---- Lienzo A4 ---- */
+.sheet{width:210mm;min-height:297mm;margin:22px auto;padding:14mm 13mm 11mm;position:relative;
+ background:linear-gradient(168deg,#0b1130 0%,#070a1c 42%,#05070f 100%);
+ border-radius:16px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.9);
+ display:flex;flex-direction:column}
+.sheet::before{content:"";position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(760px 520px at 12% -6%,rgba(139,92,246,.4),transparent 62%),
+            radial-gradient(640px 480px at 92% 14%,rgba(34,211,238,.22),transparent 60%),
+            radial-gradient(700px 560px at 50% 104%,rgba(246,167,35,.16),transparent 62%)}
+.sheet>*{position:relative}
+
+.fl-head{text-align:center;margin-bottom:7mm}
+.fl-kicker{font-size:10.5pt;font-weight:600;letter-spacing:.05em;color:#b9c0dd}
+.fl-title{font-size:54pt;font-weight:800;letter-spacing:-.045em;line-height:.92;margin:2mm 0 3mm;
+ background:linear-gradient(120deg,#fff 20%,#ddd6fe 55%,#8b5cf6 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 0 26px rgba(139,92,246,.55))}
+.fl-sub{font-size:9.6pt;color:#b9c0dd;max-width:150mm;margin-inline:auto;line-height:1.55}
+.fl-sub b{color:#fff}
+
+.fl-stats{display:flex;justify-content:center;gap:0;margin:5mm auto 6mm;border-radius:12px;overflow:hidden;
+ border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);width:fit-content}
+.fl-stats div{padding:3mm 7mm;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.fl-stats div:last-child{border:0}
+.fl-stats b{display:block;font-size:19pt;font-weight:800;line-height:1;color:#fff;letter-spacing:-.04em}
+.fl-stats span{font-size:6.6pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7d85a8;display:block;margin-top:1.4mm}
+
+.qr-grid{display:grid;grid-template-columns:1fr 1fr;gap:9mm 6mm;align-content:start}
+
+.qr-block{display:flex;gap:3.6mm;align-items:center;padding:6mm 5mm;min-height:40mm;border-radius:12px;
+ background:linear-gradient(135deg,rgba(var(--crgb),.15),rgba(255,255,255,.035));
+ border:1px solid rgba(var(--crgb),.36);border-left:3.4px solid var(--c)}
+.qr-info{flex:1;min-width:0}
+.qr-num{font-size:24pt;font-weight:800;line-height:1;color:var(--c);letter-spacing:-.045em;
+ text-shadow:0 0 18px rgba(var(--crgb),.6)}
+.qr-num small{font-size:7pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7d85a8;margin-left:1.6mm}
+.qr-block h3{font-size:13pt;font-weight:800;letter-spacing:-.025em;line-height:1.15;margin:1.6mm 0 2mm;color:#fff}
+.qr-block ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1mm}
+.qr-block li{font-size:8.6pt;color:#b9c0dd;padding-left:3.2mm;position:relative;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qr-block li::before{content:"";position:absolute;left:0;top:.52em;width:3.4px;height:3.4px;border-radius:50%;background:var(--c)}
+
+.qr-code{flex:0 0 auto;text-align:center}
+.qr-code img{width:33mm;height:33mm;border-radius:7px;background:#fff;padding:1.6mm;display:block;
+ box-shadow:0 0 0 1px rgba(var(--crgb),.5),0 6px 18px -6px rgba(0,0,0,.8)}
+.qr-code span{display:block;margin-top:1.4mm;font-size:6.2pt;font-weight:700;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--c)}
+
+.fl-foot{margin-top:auto;padding-bottom:1mm;padding-top:3.6mm;border-top:1px solid rgba(255,255,255,.12);
+ display:flex;align-items:center;justify-content:space-between;gap:5mm}
+.fl-brands{display:flex;gap:7mm;align-items:center}
+.fl-brands span{font-size:8.4pt;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8b93b5}
+.fl-foot p{font-size:7.4pt;color:#7d85a8;text-align:right;line-height:1.5;margin:0}
+.fl-foot p b{color:#ddd6fe}
+
+.toolbar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:90;display:flex;gap:9px;
+ padding:9px;border-radius:99px;background:rgba(10,14,31,.86);border:1px solid rgba(255,255,255,.14);
+ backdrop-filter:blur(18px);box-shadow:0 18px 44px -14px rgba(0,0,0,.9)}
+.toolbar .btn{padding:10px 20px;font-size:.84rem}
+
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  .toolbar,.atmos,.stars{display:none!important}
+  .sheet{margin:0;border-radius:0;box-shadow:none;width:210mm;height:297mm;
+   -webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media screen and (max-width:820px){
+  .sheet{width:100%;min-height:0;padding:22px 16px;border-radius:0;margin:0}
+  .qr-grid{grid-template-columns:1fr}
+  .fl-title{font-size:11vw}
+  .fl-stats{flex-wrap:wrap}
+  .fl-foot{flex-direction:column;align-items:flex-start;gap:3mm}
+  .fl-foot p{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="atmos"></div>
+
+<div class="sheet">
+  <header class="fl-head">
+    <div class="fl-kicker">Catálogo de experiencias</div>
+    <h1 class="fl-title">ZONA XR</h1>
+    <p class="fl-sub">Realidad virtual y mixta en la Biblioteca, <b>gratis</b> para estudiantes.
+      Encuentra tu área, <b>escanea el código</b> y descubre qué puedes vivir con el visor.</p>
+  </header>
+
+  <div class="fl-stats">
+    <div><b>76</b><span>Experiencias</span></div>
+    <div><b>6</b><span>Áreas</span></div>
+    <div><b>$0</b><span>Costo</span></div>
+  </div>
+
+  <div class="qr-grid"><article class="qr-block" style="--c:#8b5cf6;--crgb:139,92,246">
+  <div class="qr-info">
+    <div class="qr-num">17<small>exp.</small></div>
+    <h3>Universal</h3>
+    <ul><li>Primeros pasos</li><li>Oculus First Contact</li><li>YouTube VR</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/universal.svg" alt="Código QR del catálogo de Universal">
+    <span>Escanea</span>
+  </div>
+</article><article class="qr-block" style="--c:#f6a723;--crgb:246,167,35">
+  <div class="qr-info">
+    <div class="qr-num">8<small>exp.</small></div>
+    <h3>Negocios</h3>
+    <ul><li>Bodyswaps</li><li>Investment Explorer</li><li>VR Speech Trainer</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/negocios.svg" alt="Código QR del catálogo de Negocios">
+    <span>Escanea</span>
+  </div>
+</article><article class="qr-block" style="--c:#22d3ee;--crgb:34,211,238">
+  <div class="qr-info">
+    <div class="qr-num">34<small>exp.</small></div>
+    <h3>Ingeniería</h3>
+    <ul><li>Mission: ISS</li><li>Nanome</li><li>ecosphere</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/ingenieria.svg" alt="Código QR del catálogo de Ingeniería">
+    <span>Escanea</span>
+  </div>
+</article><article class="qr-block" style="--c:#f472b6;--crgb:244,114,182">
+  <div class="qr-info">
+    <div class="qr-num">5<small>exp.</small></div>
+    <h3>Humanidades y Educación</h3>
+    <ul><li>Anne Frank House VR</li><li>The Under Presents</li><li>Hetepheres Tomb</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/humanidades.svg" alt="Código QR del catálogo de Humanidades y Educación">
+    <span>Escanea</span>
+  </div>
+</article><article class="qr-block" style="--c:#34d399;--crgb:52,211,153">
+  <div class="qr-info">
+    <div class="qr-num">4<small>exp.</small></div>
+    <h3>Ciencias Sociales y Gobierno</h3>
+    <ul><li>Becoming Homeless</li><li>FIVE YEARS LATER</li><li>Social Work Simulator</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/ciencias-sociales.svg" alt="Código QR del catálogo de Ciencias Sociales y Gobierno">
+    <span>Escanea</span>
+  </div>
+</article><article class="qr-block" style="--c:#fb923c;--crgb:251,146,60">
+  <div class="qr-info">
+    <div class="qr-num">8<small>exp.</small></div>
+    <h3>Arquitectura, Arte y Diseño</h3>
+    <ul><li>Gravity Sketch</li><li>Open Brush - 3D Painting</li><li>Arkio</li></ul>
+  </div>
+  <div class="qr-code">
+    <img src="assets/qr/arquitectura.svg" alt="Código QR del catálogo de Arquitectura, Arte y Diseño">
+    <span>Escanea</span>
+  </div>
+</article></div>
+
+  <footer class="fl-foot">
+    <div class="fl-brands"><span>CEDDIE</span><span>Biblioteca</span><span>Mostla</span></div>
+    <p>Zona XR · Biblioteca del Tec de Monterrey<br><b>Pregunta en el módulo para reservar tu visor</b></p>
+  </footer>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-primary" onclick="window.print()">Imprimir / Guardar PDF</button>
+  <a class="btn btn-ghost" href="index.html">Ver versión web</a>
+</div>
+</body></html>
